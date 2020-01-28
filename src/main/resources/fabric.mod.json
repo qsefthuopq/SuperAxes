@@ -13,7 +13,7 @@
     "sources": "https://github.com/Levoment/SuperAxes"
   },
 
-  "license": "CC0-1.0",
+  "license": "MIT",
   "icon": "assets/lvmnt/icon.png",
 
   "environment": "*",
