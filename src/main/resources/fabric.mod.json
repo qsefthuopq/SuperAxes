@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "SuperAxes",
-  "description": "A mod for chopping whole trees down for easier resource gathering",
+  "description": "A mod for chopping down trees for easier wood resource gathering",
   "authors": [
     "Levoment"
   ],
@@ -20,6 +20,9 @@
   "entrypoints": {
     "main": [
       "com.github.levoment.superaxes.SuperAxesMod"
+    ],
+    "modmenu": [
+      "com.github.levoment.superaxes.ModMenuIntegration"
     ]
   },
   "mixins": [

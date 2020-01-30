@@ -31,9 +31,12 @@ public class TreeChopper {
         // Call the method to traverse through the tree
         traverseTree(world, pos);
 
-        // Remove leaves from the list
-        for(int i = 0; i < listOfBlocksToBreak.size(); i++) {
-            listOfBlocksToBreak.removeIf(blockPos -> world.getBlockState(blockPos).getBlock().matches(BlockTags.LEAVES));
+        // Check if we don't want to harvest leaves
+        if (!SuperAxesMod.harvestLeaves) {
+            // Remove leaves from the list
+            for(int i = 0; i < listOfBlocksToBreak.size(); i++) {
+                listOfBlocksToBreak.removeIf(blockPos -> world.getBlockState(blockPos).getBlock().matches(BlockTags.LEAVES));
+            }
         }
 
         // Iterate through the list containing the positions of the blocks we want to break
