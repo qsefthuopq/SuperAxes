@@ -54,12 +54,6 @@ tasks.withType(JavaCompile) {
 	options.encoding = "UTF-8"
 }
 
-// Create a reproducible build
-tasks.withType(AbstractArchiveTask) {
-	preserveFileTimestamps = false
-	reproducibleFileOrder = true
-}
-
 // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
 // if it is present.
 // If you remove this task, sources will not be generated.
