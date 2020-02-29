@@ -69,113 +69,55 @@ public class TreeChopper {
         stackOfBlockPositions.push(pos);
         // Last block position that will be used to continue searching for more blocks
         BlockPos lastBlockPosition = pos;
+        // Assume first block is a log
+        boolean CurrentIsLog = true;
+        // The offset positions of the blocks to look for
+        Stack<BlockPos> offsetsToCheck = new Stack<>();
 
-        // The positions of the blocks to look for
-        BlockPos positionToBreakNorth;
-        BlockPos positionToBreakSouth;
-        BlockPos positionToBreakEast;
-        BlockPos positionToBreakWest;
-        BlockPos positionToBreakUp;
-        BlockPos positionToBreakDown;
-
+        // TODO: limit breaking to configurable range to prevent deleafing a forest
+        //
         // Loop while there are elements in the stack
         while (!stackOfBlockPositions.isEmpty()) {
-            // Set the blocks to look for
-            positionToBreakNorth = lastBlockPosition.offset(Direction.NORTH);
-            positionToBreakSouth = lastBlockPosition.offset(Direction.SOUTH);
-            positionToBreakEast = lastBlockPosition.offset(Direction.EAST);
-            positionToBreakWest = lastBlockPosition.offset(Direction.WEST);
-            positionToBreakUp = lastBlockPosition.offset(Direction.UP);
-            positionToBreakDown = lastBlockPosition.offset(Direction.DOWN);
 
-            // Check that the block at the North of the lastBlockPosition is not null
-            if (positionToBreakNorth != null) {
-                // Check that there is an BlockState in the North offset, that there is a block in said position and that said block has tags: LOGS or LEAVES
-                if (world.getBlockState(positionToBreakNorth) != null && world.getBlockState(positionToBreakNorth).getBlock() != null && (world.getBlockState(positionToBreakNorth).getBlock().matches(BlockTags.LOGS) || world.getBlockState(positionToBreakNorth).getBlock().matches(BlockTags.LEAVES))) {
-                    // Check the the block has not already been added to the list
-                    if (!listOfBlocksToBreak.contains(positionToBreakNorth)) {
-                        // Add the block to the list
-                        listOfBlocksToBreak.add(positionToBreakNorth);
-                        // Add the block to the stack
-                        stackOfBlockPositions.push(positionToBreakNorth);
+            //This section could be moved to replace the while loop, but is seperated for readability
+            // Get all block locations around current block in a 3x3 cube
+            for (int y=-1;y<=1;y++){
+                for (int x=-1;x<=1;x++){
+                    for (int z=-1;z<=1;z++){
+                        if (!(z==0 && x==0 && y==0)) {
+                          // This is our current block, ignore it
+                            BlockPos newPos = lastBlockPosition.add(x,y,z); 
+                            if (newPos != null) {
+                                offsetsToCheck.push(newPos);
+                            }
+                        }
                     }
                 }
             }
-
-            // Check that the block at the South of the lastBlockPosition is not null
-            if (positionToBreakSouth != null) {
-                // Check that there is an BlockState in the South offset, that there is a block in said position and that said block has tags: LOGS or LEAVES
-                if (world.getBlockState(positionToBreakSouth) != null && world.getBlockState(positionToBreakSouth).getBlock() != null && (world.getBlockState(positionToBreakSouth).getBlock().matches(BlockTags.LOGS) || world.getBlockState(positionToBreakSouth).getBlock().matches(BlockTags.LEAVES))) {
-                    // Check the the block has not already been added to the list
-                    if (!listOfBlocksToBreak.contains(positionToBreakSouth)) {
-                        // Add the block to the list
-                        listOfBlocksToBreak.add(positionToBreakSouth);
-                        // Add the block to the stack
-                        stackOfBlockPositions.push(positionToBreakSouth);
-                    }
-                }
-            }
-
-            // Check that the block at the East of the lastBlockPosition is not null
-            if (positionToBreakEast != null) {
-                // Check that there is an BlockState in the East offset, that there is a block in said position and that said block has tags: LOGS or LEAVES
-                if (world.getBlockState(positionToBreakEast) != null && world.getBlockState(positionToBreakEast).getBlock() != null && (world.getBlockState(positionToBreakEast).getBlock().matches(BlockTags.LOGS) || world.getBlockState(positionToBreakEast).getBlock().matches(BlockTags.LEAVES))) {
-                    // Check the the block has not already been added to the list
-                    if (!listOfBlocksToBreak.contains(positionToBreakEast)) {
-                        // Add the block to the list
-                        listOfBlocksToBreak.add(positionToBreakEast);
-                        // Add the block to the stack
-                        stackOfBlockPositions.push(positionToBreakEast);
-                    }
-                }
-            }
-
-            // Check that the block at the West of the lastBlockPosition is not null
-            if (positionToBreakWest != null) {
-                // Check that there is an BlockState in the West offset, that there is a block in said position and that said block has tags: LOGS or LEAVES
-                if (world.getBlockState(positionToBreakWest) != null && world.getBlockState(positionToBreakWest).getBlock() != null && (world.getBlockState(positionToBreakWest).getBlock().matches(BlockTags.LOGS) || world.getBlockState(positionToBreakWest).getBlock().matches(BlockTags.LEAVES))) {
-                    // Check the the block has not already been added to the list
-                    if (!listOfBlocksToBreak.contains(positionToBreakWest)) {
-                        // Add the block to the list
-                        listOfBlocksToBreak.add(positionToBreakWest);
-                        // Add the block to the stack
-                        stackOfBlockPositions.push(positionToBreakWest);
-                    }
-                }
-            }
-
-            // Check that the block at the Up side of the lastBlockPosition is not null
-            if (positionToBreakUp != null) {
-                // Check that there is an BlockState in the Up offset, that there is a block in said position and that said block has tags: LOGS or LEAVES
-                if (world.getBlockState(positionToBreakUp) != null && world.getBlockState(positionToBreakUp).getBlock() != null && (world.getBlockState(positionToBreakUp).getBlock().matches(BlockTags.LOGS) || world.getBlockState(positionToBreakUp).getBlock().matches(BlockTags.LEAVES))) {
-                    // Check the the block has not already been added to the list
-                    if (!listOfBlocksToBreak.contains(positionToBreakUp)) {
-                        // Add the block to the list
-                        listOfBlocksToBreak.add(positionToBreakUp);
-                        // Add the block to the stack
-                        stackOfBlockPositions.push(positionToBreakUp);
-                    }
-                }
-            }
-
-            // Check that the block at the Down side of the lastBlockPosition is not null
-            if (positionToBreakDown != null) {
-                // Check that there is an BlockState in the Down offset, that there is a block in said position and that said block has tags: LOGS or LEAVES
-                if (world.getBlockState(positionToBreakDown) != null && world.getBlockState(positionToBreakDown).getBlock() != null && (world.getBlockState(positionToBreakDown).getBlock().matches(BlockTags.LOGS) || world.getBlockState(positionToBreakDown).getBlock().matches(BlockTags.LEAVES) )) {
-                    // Check the the block has not already been added to the list
-                    if (!listOfBlocksToBreak.contains(positionToBreakDown)) {
-                        // Add the block to the list
-                        listOfBlocksToBreak.add(positionToBreakDown);
-                        // Add the block to the stack
-                        stackOfBlockPositions.push(positionToBreakDown);
+            while (!offsetsToCheck.isEmpty()) {
+                BlockPos checkPos = offsetsToCheck.pop();
+                if (checkPos != null) {
+                    if (
+                            world.getBlockState(checkPos) != null && 
+                            world.getBlockState(checkPos).getBlock() != null &&
+                            ( 
+                                // Dont process logs unless coming from another log, should alleviate most leaf->2nd tree issues
+                                ( world.getBlockState(checkPos).getBlock().matches(BlockTags.LOGS) && CurrentIsLog)
+                                || world.getBlockState(checkPos).getBlock().matches(BlockTags.LEAVES) 
+                            ) 
+                        ) {
+                        if (!listOfBlocksToBreak.contains(checkPos)) {
+                            listOfBlocksToBreak.add(checkPos);
+                            stackOfBlockPositions.push(checkPos);
+                        }
                     }
                 }
             }
 
             // Make the next position to be used to search for other blocks be the one gotten from the top position in the stack
-            lastBlockPosition = stackOfBlockPositions.peek();
-            // Pop a BlockPos from the stack
-            stackOfBlockPositions.pop();
+            // and remove that block from the list
+            lastBlockPosition = stackOfBlockPositions.pop();
+            CurrentIsLog = world.getBlockState(lastBlockPosition).getBlock().matches(BlockTags.LOGS);
         }
     }
 }
