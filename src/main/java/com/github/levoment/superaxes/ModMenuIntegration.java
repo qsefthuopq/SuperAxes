@@ -1,5 +1,6 @@
 package com.github.levoment.superaxes;
 
+import io.github.prospector.modmenu.api.ConfigScreenFactory;
 import io.github.prospector.modmenu.api.ModMenuApi;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
@@ -18,7 +19,7 @@ public class ModMenuIntegration implements ModMenuApi {
     }
 
     @Override
-    public Function<Screen, ? extends Screen> getConfigScreenFactory() {
+    public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return screen -> {
 
             // Get the previous screen
@@ -60,4 +61,6 @@ public class ModMenuIntegration implements ModMenuApi {
             return builder.build();
         };
     }
+
+
 }

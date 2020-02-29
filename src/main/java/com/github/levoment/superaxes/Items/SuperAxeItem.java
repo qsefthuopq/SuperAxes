@@ -25,7 +25,7 @@ public class SuperAxeItem extends AxeItem {
             if (miner.isSneaking()) return super.canMine(state, world, pos, miner);
 
             // Check if the tool is effective on the block and check for the LOGS tag
-            if (state.getBlock().matches(BlockTags.LOGS)) {
+            if (state.matches(BlockTags.LOGS)) {
                 // Create an instance of TreeChopper
                 TreeChopper treeChopper = new TreeChopper();
                 // Create a new thread for chopping the tree

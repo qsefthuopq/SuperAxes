@@ -4,6 +4,7 @@ package com.github.levoment.superaxes.Items;
 import com.github.levoment.superaxes.SuperAxesMaterialGenerator;
 import com.github.levoment.superaxes.SuperAxesMod;
 import net.minecraft.item.Item;
+import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.ToolMaterials;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -18,6 +19,7 @@ public class ModItems {
     public static SuperAxeItem IronSuperAxe = null;
     public static SuperAxeItem GoldSuperAxe = null;
     public static SuperAxeItem DiamondSuperAxe = null;
+    public static SuperAxeItem NetheriteSuperAxe = null;
 
     public static Map<Identifier, Item> mapOfIdentifiers = new HashMap<>();
 
@@ -28,6 +30,7 @@ public class ModItems {
         IronSuperAxe = new SuperAxeItem(new SuperAxesMaterialGenerator(ToolMaterials.IRON), new Item.Settings().group(SuperAxesMod.SUPERAXES_GROUP));
         GoldSuperAxe = new SuperAxeItem(new SuperAxesMaterialGenerator(ToolMaterials.GOLD), new Item.Settings().group(SuperAxesMod.SUPERAXES_GROUP));
         DiamondSuperAxe = new SuperAxeItem(new SuperAxesMaterialGenerator(ToolMaterials.DIAMOND), new Item.Settings().group(SuperAxesMod.SUPERAXES_GROUP));
+        NetheriteSuperAxe = new SuperAxeItem(new SuperAxesMaterialGenerator(ToolMaterials.NETHERITE), new Item.Settings().group(SuperAxesMod.SUPERAXES_GROUP));
     }
 
     // Create a map with the identifier of the item and the item
@@ -37,6 +40,7 @@ public class ModItems {
         mapOfIdentifiers.put(new Identifier(SuperAxesMod.MODID, "iron_superaxe"), IronSuperAxe);
         mapOfIdentifiers.put(new Identifier(SuperAxesMod.MODID, "gold_superaxe"), GoldSuperAxe);
         mapOfIdentifiers.put(new Identifier(SuperAxesMod.MODID, "diamond_superaxe"), DiamondSuperAxe);
+        mapOfIdentifiers.put(new Identifier(SuperAxesMod.MODID, "netherite_superaxe"), NetheriteSuperAxe);
     }
 
     // Register the initialized items

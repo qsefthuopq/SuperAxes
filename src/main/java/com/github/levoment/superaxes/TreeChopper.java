@@ -72,7 +72,7 @@ public class TreeChopper {
                                 // Check if we don't want to harvest leaves
                                 if (!SuperAxesMod.harvestLeaves) {
                                     // Check if the blockstate is not null, the block is not null, and if the block is a log coming from another log, should alleviate most leaf->2nd tree issues
-                                    if (world.getBlockState(newPos) != null && world.getBlockState(newPos).getBlock() != null && ((world.getBlockState(newPos).getBlock().matches(BlockTags.LOGS) && CurrentIsLog))) {
+                                    if (world.getBlockState(newPos) != null && world.getBlockState(newPos).getBlock() != null && ((world.getBlockState(newPos).matches(BlockTags.LOGS) && CurrentIsLog))) {
                                         // Check if the block has not been added to the list of blocks to break
                                         if (!listOfBlocksToBreak.contains(newPos)) {
                                             // Add the block to the list of blocks to break and also add it to the stack to continue searching for blocks to break
@@ -86,16 +86,16 @@ public class TreeChopper {
                                     if (Math.abs(newPos.getX() - originalBlockPos.getX()) < SuperAxesMod.range || Math.abs(newPos.getZ() - originalBlockPos.getZ()) < SuperAxesMod.range) {
                                         // Since we want to harvest leaves, let's add the leaves and the logs to search for
                                         // Check if the block is not blockstate is not null, the block is not null, and if the block is a log or leave coming from another log
-                                        if (world.getBlockState(newPos) != null && world.getBlockState(newPos).getBlock() != null && ((world.getBlockState(newPos).getBlock().matches(BlockTags.LOGS) && CurrentIsLog) || world.getBlockState(newPos).getBlock().matches(BlockTags.LEAVES))) {
+                                        if (world.getBlockState(newPos) != null && world.getBlockState(newPos).getBlock() != null && ((world.getBlockState(newPos).matches(BlockTags.LOGS) && CurrentIsLog) || world.getBlockState(newPos).matches(BlockTags.LEAVES))) {
                                             // If it is a log add it to the list of logs to break
-                                            if (world.getBlockState(newPos).getBlock().matches(BlockTags.LOGS)) {
+                                            if (world.getBlockState(newPos).matches(BlockTags.LOGS)) {
                                                 if (!listOfBlocksToBreak.contains(newPos)) {
                                                     listOfBlocksToBreak.add(newPos);
                                                     stackOfBlockPositions.push(newPos);
                                                 }
                                             }
                                             // If it is a leave add it to the list of leaves to break
-                                            else if (world.getBlockState(newPos).getBlock().matches(BlockTags.LEAVES)) {
+                                            else if (world.getBlockState(newPos).matches(BlockTags.LEAVES)) {
                                                 if (!listOfLeavesToBreak.contains(newPos)) {
                                                     listOfLeavesToBreak.add(newPos);
                                                     stackOfBlockPositions.push(newPos);
@@ -115,7 +115,7 @@ public class TreeChopper {
             // Make the next position to be used to search for other blocks be the one gotten from the top position in the stack
             // and remove that block from the list
             lastBlockPosition = stackOfBlockPositions.pop();
-            CurrentIsLog = world.getBlockState(lastBlockPosition).getBlock().matches(BlockTags.LOGS);
+            CurrentIsLog = world.getBlockState(lastBlockPosition).matches(BlockTags.LOGS);
         }
     }
 
@@ -136,7 +136,7 @@ public class TreeChopper {
                                 miner.getMainHandStack().postMine(world, world.getBlockState(blockPos), blockPos, miner);
                             else this.firstBlockBroken = true;
                         }
-                        if (world.getBlockState(blockPos).getBlock().matches(BlockTags.LOGS)) {
+                        if (world.getBlockState(blockPos).matches(BlockTags.LOGS)) {
                             // Harvest the block
                             world.breakBlock(blockPos, true, miner);
                         }
@@ -169,7 +169,7 @@ public class TreeChopper {
                                 else this.firstBlockBroken = true;
                             }
                             // Check if leaves are an instance of LeavesBlock
-                            if (world.getBlockState(blockPos).getBlock().matches(BlockTags.LEAVES) && world.getBlockState(blockPos).getBlock() instanceof LeavesBlock) {
+                            if (world.getBlockState(blockPos).matches(BlockTags.LEAVES) && world.getBlockState(blockPos).getBlock() instanceof LeavesBlock) {
                                 try {
                                     // Check if the leaves are a Distance of 7 from a log
                                     if (world.getBlockState(blockPos).get(LeavesBlock.DISTANCE) == 7) {
