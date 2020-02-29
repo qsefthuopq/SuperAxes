@@ -33,10 +33,17 @@ public class ModMenuIntegration implements ModMenuApi {
             // Set an option for harvesting leaves
             ConfigEntryBuilder entryBuilder = builder.entryBuilder();
             general.addEntry(entryBuilder.startBooleanToggle("option.superaxes.harvest_leaves", SuperAxesMod.harvestLeaves)
-            .setDefaultValue(false)
-            .setTooltip(new TranslatableText("option.superaxes.harvest_leaves.tooltip").asString())
-            .setSaveConsumer(newValue -> SuperAxesMod.harvestLeaves = newValue)
-            .build());
+                    .setDefaultValue(false)
+                    .setTooltip(new TranslatableText("option.superaxes.harvest_leaves.tooltip").asString())
+                    .setSaveConsumer(newValue -> SuperAxesMod.harvestLeaves = newValue)
+                    .build());
+
+            // Set an option for the range
+            general.addEntry(entryBuilder.startIntField ("option.superaxes.range", SuperAxesMod.range)
+                    .setDefaultValue(5)
+                    .setTooltip(new TranslatableText("option.superaxes.range.tooltip").asString())
+                    .setSaveConsumer(newValue -> SuperAxesMod.range = newValue)
+                    .build());
 
             // Save config
             builder.setSavingRunnable(() -> {
@@ -44,6 +51,7 @@ public class ModMenuIntegration implements ModMenuApi {
                 Properties configProperties = new Properties();
                 // Set the property
                 configProperties.setProperty("harvestLeaves", String.valueOf(SuperAxesMod.harvestLeaves));
+                configProperties.setProperty("range", String.valueOf(SuperAxesMod.range));
                 // Save the properties
                 SuperAxesMod.saveConfig(SuperAxesMod.configFile, configProperties);
             });

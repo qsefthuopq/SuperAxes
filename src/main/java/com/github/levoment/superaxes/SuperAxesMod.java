@@ -20,6 +20,7 @@ public class SuperAxesMod implements ModInitializer {
 	public static File configFile = new File(FabricLoader.getInstance().getConfigDirectory(), "superaxes.properties");
 	// Config properties
 	public static boolean harvestLeaves = false;
+	public static int range = 5;
 
 	@Override
 	public void onInitialize() {
@@ -31,7 +32,7 @@ public class SuperAxesMod implements ModInitializer {
 		ModItems.initializeItems();
 
 		// Populate the list of the mod's items and their identifiers
-        ModItems.poplateMapOfIdentifiers();
+		ModItems.poplateMapOfIdentifiers();
 
 		// Register the items
 		ModItems.registerItems();
@@ -45,6 +46,7 @@ public class SuperAxesMod implements ModInitializer {
 				Properties configProperties = new Properties();
 				// Set the properties
 				configProperties.setProperty("harvestLeaves", String.valueOf(false));
+				configProperties.setProperty("range", "5");
 				// Save the properties to the config file
 				saveConfig(configFile, configProperties);
 				// Load the saved configuration
@@ -57,12 +59,14 @@ public class SuperAxesMod implements ModInitializer {
 				// Read the properties
 				readProperties.load(input);
 				// Set the property
-				SuperAxesMod.harvestLeaves = Boolean.parseBoolean(readProperties.getProperty("harvestLeaves"));
+				if (readProperties.getProperty("harvestLeaves")!= null) SuperAxesMod.harvestLeaves = Boolean.parseBoolean(readProperties.getProperty("harvestLeaves"));
+				if (readProperties.getProperty("range") != null) SuperAxesMod.range = Integer.parseInt(readProperties.getProperty("range"));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+
 
 	public static void saveConfig(File configFile, Properties properties) {
 		try {
