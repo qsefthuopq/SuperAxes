@@ -29,7 +29,7 @@ steps:
     target: '$(Build.SourceVersion)'
     tagSource: 'userSpecifiedTag'
     tag: $(Build.BuildNumber)
-    assets: '$(Build.BinariesDirectory)/*'
+    assets: '$(Pipeline.Workspace)/s/build/libs/*'
     addChangeLog: false
 - task: PublishPipelineArtifact@1
   inputs:
