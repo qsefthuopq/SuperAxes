@@ -22,13 +22,12 @@ steps:
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'build'
 - task: GitHubRelease@1
-- task: GitHubRelease@1
   inputs:
-    repositoryName: '$(Build.Repository.Name)'
+    gitHubConnection: 'github.com_Levoment'
+    repositoryName: 'Levoment/SuperAxes'
     action: 'create'
     target: '$(Build.SourceVersion)'
     tagSource: 'userSpecifiedTag'
     tag: $(Build.BuildNumber)
-    assets: $(Build.BinariesDirectory)/*
-    changeLogCompareToRelease: 'lastFullRelease'
-    changeLogType: 'commitBased'
+    assets: '$(Build.BinariesDirectory)/*'
+    addChangeLog: false
