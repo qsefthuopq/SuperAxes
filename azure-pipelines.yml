@@ -31,3 +31,7 @@ steps:
     tag: $(Build.BuildNumber)
     assets: '$(Build.BinariesDirectory)/*'
     addChangeLog: false
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)'
+    publishLocation: 'pipeline'
