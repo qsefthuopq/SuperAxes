@@ -12,12 +12,14 @@ pool:
   variables:
     mod_version
 
+
 steps:
 - task: Bash@3
   name: GetModVersion
   inputs:
     targetType: 'inline'
-    script: '##vso[task.setvariable variable=mod_version]$(grep "mod_version" ./gradle.properties | grep -P -o "(\d+.\d+.\d+)")'
+    script: 'echo ##vso[task.setvariable variable=mod_version]$(grep "mod_version" ./gradle.properties | grep -P -o "(\d+.\d+.\d+)")'
+    
 - task: Gradle@2
   inputs:
     workingDirectory: ''
