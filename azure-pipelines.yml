@@ -5,7 +5,6 @@
 
 trigger:
 - release/*
-- master
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -32,7 +31,7 @@ steps:
     target: '$(Build.SourceVersion)'
     tagSource: 'userSpecifiedTag'
     tag: '$(Build.BuildNumber)'  
-    title: '$(archives_basename) $(mod_version) build $(Build.BuildNumber)'
+    title: '$(archives_basename) $(mod_version)'
     assets: '$(Pipeline.Workspace)/s/build/libs/*'
     changeLogCompareToRelease: 'lastFullRelease'
     changeLogType: 'commitBased'
