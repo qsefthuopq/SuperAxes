@@ -3,22 +3,16 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
+
 trigger:
 - master
 
 pool:
   vmImage: 'ubuntu-latest'
 
-  variables:
-    mod_version
-
-
 steps:
-- task: Bash@3
-  name: GetModVersion
-  inputs:
-    targetType: 'inline'
-    script: 'echo ##vso[task.setvariable variable=mod_version]$(grep "mod_version" ./gradle.properties | grep -P -o "(\d+.\d+.\d+)")'
+- bash : | 
+    echo "##vso[task.setvariable variable=mod_version]$(grep 'mod_version' ./gradle.properties | grep -P -o '(\d+.\d+.\d+)')"
     
 - task: Gradle@2
   inputs:
@@ -30,7 +24,6 @@ steps:
     jdkArchitectureOption: 'x64'
     publishJUnitResults: true
     tasks: 'build'
-
 - task: GitHubRelease@1
   inputs:
     gitHubConnection: 'github.com_Levoment'
