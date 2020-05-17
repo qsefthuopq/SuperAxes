@@ -9,12 +9,15 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+  variables:
+    mod_version
+
 steps:
 - task: Bash@3
   name: GetModVersion
   inputs:
     targetType: 'inline'
-    script: '$(GetModVersion.mod_version)=$(grep "mod_version" ./gradle.properties | grep -P -o "(\d+.\d+.\d+)")'
+    script: '##vso[task.setvariable variable=mod_version]$(grep "mod_version" ./gradle.properties | grep -P -o "(\d+.\d+.\d+)")'
 - task: Gradle@2
   inputs:
     workingDirectory: ''
@@ -34,7 +37,7 @@ steps:
     target: '$(Build.SourceVersion)'
     tagSource: 'userSpecifiedTag'
     tag: '$(Build.BuildNumber)'  
-    title: 'Super Axes $(GetModVersion.mod_version) build $(Build.BuildNumber)'
+    title: 'Super Axes $(mod_version) build $(Build.BuildNumber)'
     assets: '$(Pipeline.Workspace)/s/build/libs/*'
     changeLogCompareToRelease: 'lastFullRelease'
     changeLogType: 'commitBased'
