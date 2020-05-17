@@ -33,5 +33,5 @@ steps:
     addChangeLog: false
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(Pipeline.Workspace)/build/libs'
+    targetPath: '$(Pipeline.Workspace)/s/build/libs'
     publishLocation: 'pipeline'
