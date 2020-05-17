@@ -10,6 +10,11 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: 'mod_version=grep ''mod_version'' ./gradle.properties | grep -P -o ''(\d+.\d+.\d+)'''
+
 - task: Gradle@2
   inputs:
     workingDirectory: ''
@@ -19,8 +24,8 @@ steps:
     jdkVersionOption: '1.11'
     jdkArchitectureOption: 'x64'
     publishJUnitResults: true
-    testResultsFiles: '**/TEST-*.xml'
     tasks: 'build'
+
 - task: GitHubRelease@1
   inputs:
     gitHubConnection: 'github.com_Levoment'
@@ -28,10 +33,8 @@ steps:
     action: 'create'
     target: '$(Build.SourceVersion)'
     tagSource: 'userSpecifiedTag'
-    tag: $(Build.BuildNumber)
+    tag: '$(Build.BuildNumber)'  
+    title: 'Super Axes $(mod_version) build $(Build.BuildNumber)'
     assets: '$(Pipeline.Workspace)/s/build/libs/*'
-    addChangeLog: false
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(Pipeline.Workspace)/s/build/libs'
-    publishLocation: 'pipeline'
+    changeLogCompareToRelease: 'lastFullRelease'
+    changeLogType: 'commitBased'
