@@ -3,17 +3,17 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
-
 trigger:
+- release/*
 - master
 
 pool:
   vmImage: 'ubuntu-latest'
-
 steps:
 - bash : | 
     echo "##vso[task.setvariable variable=mod_version]$(grep 'mod_version' ./gradle.properties | grep -P -o '(\d+.\d+.\d+)')"
-    
+- bash: |
+    echo "##vso[task.setvariable variable=archives_basename]$(grep 'archives_base_name' ./gradle.properties | grep -P -o "(?<=\=).*" | sed -e 's/^[ \t]*//')"
 - task: Gradle@2
   inputs:
     workingDirectory: ''
@@ -32,7 +32,7 @@ steps:
     target: '$(Build.SourceVersion)'
     tagSource: 'userSpecifiedTag'
     tag: '$(Build.BuildNumber)'  
-    title: 'Super Axes $(mod_version) build $(Build.BuildNumber)'
+    title: '$(archives_basename) $(mod_version) build $(Build.BuildNumber)'
     assets: '$(Pipeline.Workspace)/s/build/libs/*'
     changeLogCompareToRelease: 'lastFullRelease'
     changeLogType: 'commitBased'
