@@ -2,15 +2,34 @@ package com.github.levoment.superaxes.Items;
 
 import com.github.levoment.superaxes.SuperAxesMaterialGenerator;
 import com.github.levoment.superaxes.TreeChopper;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.ToolMaterial;
+import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.tag.BlockTags;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.ItemScatterer;
+import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
+import org.apache.logging.log4j.core.jmx.Server;
+
+import java.util.List;
 
 public class SuperAxeItem extends AxeItem {
+
+    private boolean mineLeaves = false;
 
     // Constructor
     public SuperAxeItem(ToolMaterial material, Settings settings) {
@@ -23,9 +42,9 @@ public class SuperAxeItem extends AxeItem {
         if(!world.isClient()) {
             // Check if the player is sneaking. If Sneaking, mine as normal
             if (miner.isSneaking()) return super.canMine(state, world, pos, miner);
-
+            System.out.println("Can mine called");
             // Check if the tool is effective on the block and check for the LOGS tag
-            if (state.matches(BlockTags.LOGS)) {
+            if (state.isIn(BlockTags.LOGS)) {
                 // Create an instance of TreeChopper
                 TreeChopper treeChopper = new TreeChopper();
                 // Create a new thread for chopping the tree
@@ -33,5 +52,24 @@ public class SuperAxeItem extends AxeItem {
             }
         }
         return true;
+    }
+
+    public void mineLeaves(BlockState leafBlockState, ServerWorld serverWorld, BlockPos pos, PlayerEntity miner)
+    {
+        if (leafBlockState.isIn(BlockTags.LEAVES))
+        {
+            // Set the loot context for mining the leaf block
+            LootContext.Builder builder = (new LootContext.Builder(serverWorld)).setRandom(serverWorld.random).setLuck(miner.getLuck()).put(LootContextParameters.POSITION, pos).put(LootContextParameters.TOOL, miner.getMainHandStack()).putNullable(LootContextParameters.THIS_ENTITY, miner);
+            // Get a list of drops if the tool is used to harvest the block
+            List<ItemStack> listOfDroppedStacks = leafBlockState.getDroppedStacks(builder);
+            listOfDroppedStacks.forEach(itemStack -> {
+                // Drop the item on the world
+                ItemScatterer.spawn(serverWorld, pos.getX(), pos.getY(), pos.getZ(), itemStack);
+                // Break the block
+                serverWorld.breakBlock(pos, false, miner);
+            });
+            // Break the block if the list of drops is empty
+            if (listOfDroppedStacks.isEmpty()) serverWorld.breakBlock(pos, true, miner);
+        }
     }
 }

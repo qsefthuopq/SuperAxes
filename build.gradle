@@ -24,15 +24,15 @@ dependencies {
 	modCompile "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	// ClothConfig integration
-	modApi('me.shedaniel.cloth:config-2:2.10') {
+	modApi("me.shedaniel.cloth:config-2:${project.cloth_config_version}") {
 		exclude group: "net.fabricmc.fabric-api"
 	}
-	include('me.shedaniel.cloth:config-2:2.10'){
+	include("me.shedaniel.cloth:config-2:${project.cloth_config_version}"){
 		exclude group: "net.fabricmc.fabric-api"
 	}
 
 	// ModMenu integration
-	modImplementation('io.github.prospector:modmenu:1.10.0+build.28'){
+	modImplementation("io.github.prospector:modmenu:${project.mod_menu_version}"){
 		exclude group: "net.fabricmc.fabric-api"
 	}
 

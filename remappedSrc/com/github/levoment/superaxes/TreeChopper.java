@@ -1,12 +1,10 @@
 package com.github.levoment.superaxes;
 
 import com.github.levoment.superaxes.Items.ModItems;
-import com.github.levoment.superaxes.Items.SuperAxeItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LeavesBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
@@ -39,7 +37,7 @@ public class TreeChopper {
             // Break the logs first
             breakLogs(world, miner);
             // Break leaves afterwards
-            breakLeaves(world, state, miner, itemStack);
+            breakLeaves(world, miner);
         }
     }
 
@@ -85,7 +83,7 @@ public class TreeChopper {
                                 } else {
                                     // We want to harvest leaves
                                     // Check if we are within the configured range
-                                    if (Math.abs(newPos.getX() - originalBlockPos.getX()) < SuperAxesMod.range && Math.abs(newPos.getZ() - originalBlockPos.getZ()) < SuperAxesMod.range) {
+                                    if (Math.abs(newPos.getX() - originalBlockPos.getX()) < SuperAxesMod.range || Math.abs(newPos.getZ() - originalBlockPos.getZ()) < SuperAxesMod.range) {
                                         // Since we want to harvest leaves, let's add the leaves and the logs to search for
                                         // Check if the block is not blockstate is not null, the block is not null, and if the block is a log or leave coming from another log
                                         if (world.getBlockState(newPos) != null && world.getBlockState(newPos).getBlock() != null && ((world.getBlockState(newPos).isIn(BlockTags.LOGS) && CurrentIsLog) || world.getBlockState(newPos).isIn(BlockTags.LEAVES))) {
@@ -148,7 +146,7 @@ public class TreeChopper {
         }
     }
 
-    public void breakLeaves(World world, BlockState blockState, PlayerEntity miner, ItemStack itemStack) {
+    public void breakLeaves(World world, PlayerEntity miner) {
         try {
             // Sleep to wait for the leaves to tick and be updated
             Thread.sleep(500);
@@ -173,11 +171,10 @@ public class TreeChopper {
                             // Check if leaves are an instance of LeavesBlock
                             if (world.getBlockState(blockPos).isIn(BlockTags.LEAVES) && world.getBlockState(blockPos).getBlock() instanceof LeavesBlock) {
                                 try {
-                                    BlockState leafBlockState = world.getBlockState(blockPos);
                                     // Check if the leaves are a Distance of 7 from a log
-                                    if (leafBlockState.get(LeavesBlock.DISTANCE) == 7) {
+                                    if (world.getBlockState(blockPos).get(LeavesBlock.DISTANCE) == 7) {
                                         // Harvest the block
-                                        if (!world.isClient()) ((SuperAxeItem) itemStack.getItem()).mineLeaves(leafBlockState, (ServerWorld)  world, blockPos, miner);
+                                        world.breakBlock(blockPos, true, miner);
                                     }
                                 } catch (IllegalArgumentException illegalArgumentException) {
                                     // Don't do anything. Sometimes leaves are dropped before we harvest them
