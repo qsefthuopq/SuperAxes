@@ -33,5 +33,4 @@ steps:
     tag: '$(Build.BuildNumber)'  
     title: '$(archives_basename) $(mod_version)'
     assets: '$(Pipeline.Workspace)/s/build/libs/*'
-    changeLogCompareToRelease: 'lastFullRelease'
-    changeLogType: 'commitBased'
+    addChangeLog: false

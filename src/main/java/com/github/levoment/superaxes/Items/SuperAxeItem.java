@@ -59,7 +59,7 @@ public class SuperAxeItem extends AxeItem {
         if (leafBlockState.isIn(BlockTags.LEAVES))
         {
             // Set the loot context for mining the leaf block
-            LootContext.Builder builder = (new LootContext.Builder(serverWorld)).setRandom(serverWorld.random).setLuck(miner.getLuck()).put(LootContextParameters.POSITION, pos).put(LootContextParameters.TOOL, miner.getMainHandStack()).putNullable(LootContextParameters.THIS_ENTITY, miner);
+            LootContext.Builder builder = (new LootContext.Builder(serverWorld)).random(serverWorld.random).luck(miner.getLuck()).optionalParameter(LootContextParameters.POSITION, pos).optionalParameter(LootContextParameters.TOOL, miner.getMainHandStack()).optionalParameter(LootContextParameters.THIS_ENTITY, miner);
             // Get a list of drops if the tool is used to harvest the block
             List<ItemStack> listOfDroppedStacks = leafBlockState.getDroppedStacks(builder);
             listOfDroppedStacks.forEach(itemStack -> {
