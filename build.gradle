@@ -13,6 +13,11 @@ group = project.maven_group
 minecraft {
 }
 
+// Reproducible builds
+tasks.withType(AbstractArchiveTask) {
+	preserveFileTimestamps = false
+	reproducibleFileOrder = true
+}
 
 dependencies {
 	//to change the versions see the gradle.properties file
