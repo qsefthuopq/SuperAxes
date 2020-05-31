@@ -50,6 +50,9 @@ jobs:
         release_name: ${{ steps.set-mod-archive-base-name.outputs.ARCHIVE_BASENAME }} ${{ steps.set-mod-version.outputs.MOD_VERSION }}
         draft: false
         prerelease: false
+    - name: Debug output
+      id: debug-output
+      run: echo "ls build/dir"
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1.0.1
       id: upload-release-asset
