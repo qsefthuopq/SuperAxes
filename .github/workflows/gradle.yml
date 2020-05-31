@@ -34,6 +34,7 @@ jobs:
       id: set-mod-archive-base-name
       run: echo "::set-output name=ARCHIVE_BASENAME::$(grep 'archives_base_name' ./gradle.properties | grep -P -o '(?<=\=).*' | sed -e 's/^[ \t]*//')"
     - name : Create release
+      id: create_release
       uses: actions/create-release@v1.0.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -50,5 +51,5 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: './build/libs/'
-        asset_name: '*.jar'
+        asset_name: ${{ steps.set-mod-archive-base-name.outputs.ARCHIVE_BASENAME }} ${{ steps.set-mod-version.outputs.MOD_VERSION }} '.jar'
         asset_content_type: application/jar
