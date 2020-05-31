@@ -1,6 +1,9 @@
 language: java
+jdk:
+  - openjdk11
 
-if: branch = release/*
+./gradlew assemble
+
 
 deploy:
   provider: releases
