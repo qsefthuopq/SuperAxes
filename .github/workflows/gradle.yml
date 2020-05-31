@@ -52,7 +52,7 @@ jobs:
         prerelease: false
     - name: Debug output
       id: debug-output
-      run: "::debug::ls build/libs"
+      run: echo "::debug::ls build/libs"
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1.0.1
       id: upload-release-asset
