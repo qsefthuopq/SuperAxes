@@ -33,12 +33,13 @@ jobs:
     - name: Set mod archive base name
       id: set-mod-archive-base-name
       run: echo "::set-output name=ARCHIVE_BASENAME::$(grep 'archives_base_name' ./gradle.properties | grep -P -o '(?<=\=).*' | sed -e 's/^[ \t]*//')"
+    - name : Create release
     - uses: actions/create-release@v1.0.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
-        release_name: ${{ steps.set-mod-version.outputs.MOD_VERSION }} ${{ steps.set-mod-archive-base-name.outputs.ARCHIVE_BASENAME }}
+        release_name: ${{ steps.set-mod-archive-base-name.outputs.ARCHIVE_BASENAME }} ${{ steps.set-mod-version.outputs.MOD_VERSION }}
         draft: false
         prerelease: false
     - name: Upload Release Asset
