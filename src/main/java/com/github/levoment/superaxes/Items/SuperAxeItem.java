@@ -42,7 +42,6 @@ public class SuperAxeItem extends AxeItem {
         if(!world.isClient()) {
             // Check if the player is sneaking. If Sneaking, mine as normal
             if (miner.isSneaking()) return super.canMine(state, world, pos, miner);
-            System.out.println("Can mine called");
             // Check if the tool is effective on the block and check for the LOGS tag
             if (state.isIn(BlockTags.LOGS)) {
                 // Create an instance of TreeChopper
@@ -71,5 +70,21 @@ public class SuperAxeItem extends AxeItem {
             // Break the block if the list of drops is empty
             if (listOfDroppedStacks.isEmpty()) serverWorld.breakBlock(pos, true, miner);
         }
+    }
+
+    public void mineBlockWithLootContext(BlockState leafBlockState, ServerWorld serverWorld, BlockPos pos, PlayerEntity miner)
+    {
+            // Set the loot context for mining the leaf block
+            LootContext.Builder builder = (new LootContext.Builder(serverWorld)).random(serverWorld.random).luck(miner.getLuck()).optionalParameter(LootContextParameters.POSITION, pos).optionalParameter(LootContextParameters.TOOL, miner.getMainHandStack()).optionalParameter(LootContextParameters.THIS_ENTITY, miner);
+            // Get a list of drops if the tool is used to harvest the block
+            List<ItemStack> listOfDroppedStacks = leafBlockState.getDroppedStacks(builder);
+            listOfDroppedStacks.forEach(itemStack -> {
+                // Drop the item on the world
+                ItemScatterer.spawn(serverWorld, pos.getX(), pos.getY(), pos.getZ(), itemStack);
+                // Break the block
+                serverWorld.breakBlock(pos, false, miner);
+            });
+            // Break the block if the list of drops is empty
+            if (listOfDroppedStacks.isEmpty()) serverWorld.breakBlock(pos, true, miner);
     }
 }
