@@ -19,14 +19,11 @@ jobs:
     - uses: actions/checkout@v2
 
     # Set up JDK
-=======
     - uses: actions/checkout@v2
->>>>>>> a8502b05fda307f296470b140c0f9742ba198450
     - name: Set up JDK 11
       uses: actions/setup-java@v1
       with:
         java-version: 11
-<<<<<<< HEAD
 
     # Set up gradle execute permissions
     - name: Grant execute permission for gradlew
@@ -49,7 +46,6 @@ jobs:
     - name : Create release
       id: create_release
       uses: actions/create-release@v1.0.0
-=======
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
@@ -65,12 +61,10 @@ jobs:
       id: set-mod-archive-base-name
       run: echo "::set-env name=ARCHIVE_BASENAME::$(grep 'archives_base_name' ./gradle.properties | grep -P -o '(?<=\=).*' | sed -e 's/^[ \t]*//')"
     - uses: actions/create-release@v1.0.0
->>>>>>> a8502b05fda307f296470b140c0f9742ba198450
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
-<<<<<<< HEAD
         release_name: ${{ steps.set-mod-archive-base-name.outputs.ARCHIVE_BASENAME }} ${{ steps.set-mod-version.outputs.MOD_VERSION }}
         draft: false
         prerelease: false
@@ -79,23 +73,16 @@ jobs:
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1.0.1
       id: upload-release-asset
-=======
         release_name: ${{ MOD_VERSION }} ${{ ARCHIVE_BASENAME }}
         draft: false
         prerelease: false
     - name: Upload Release Asset
       id: upload-release-asset 
       uses: actions/upload-release-asset@v1.0.1
->>>>>>> a8502b05fda307f296470b140c0f9742ba198450
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-<<<<<<< HEAD
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
         asset_path: ./build/libs/${{ steps.set-mod-archive-base-name.outputs.ARCHIVE_BASENAME }}-${{ steps.set-mod-version.outputs.MOD_VERSION }}.jar
         asset_name: ${{ steps.set-mod-archive-base-name.outputs.ARCHIVE_BASENAME }}-${{ steps.set-mod-version.outputs.MOD_VERSION }}.jar
-=======
-        asset_path: ./build/libs/*
-        asset_name: '*.jar'
->>>>>>> a8502b05fda307f296470b140c0f9742ba198450
         asset_content_type: application/jar
