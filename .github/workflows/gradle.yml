@@ -72,9 +72,9 @@ jobs:
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1.0.1
       id: upload-release-asset
-        release_name: ${{ MOD_VERSION }} ${{ ARCHIVE_BASENAME }}
-        draft: false
-        prerelease: false
+      release_name: ${{ MOD_VERSION }} ${{ ARCHIVE_BASENAME }}
+      draft: false
+      prerelease: false
     - name: Upload Release Asset
       id: upload-release-asset 
       uses: actions/upload-release-asset@v1.0.1
